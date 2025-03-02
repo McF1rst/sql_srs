@@ -10,7 +10,7 @@ data = {
 }
 
 df = pd.DataFrame(data)
-tab1 = st.tabs(['SQL'])
+tab1, tab2 = st.tabs(['SQL', 'Other'])
 with tab1:
     input_text = st.text_area('Entrez votre input')
     processed_dataframe = duckdb.sql(input_text)
