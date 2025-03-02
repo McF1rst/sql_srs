@@ -11,7 +11,7 @@ data = {
 }
 
 df = pd.DataFrame(data)
-option = st.selectbox("What would you like to reviex ?", ['Joins', 'Group By', 'Windows Functions'],
+option = st.selectbox("What would you like to review ?", ['Joins', 'Group By', 'Windows Functions'],
                       placeholder="select a value ...", index=None)
 if option:
     st.write('You selected ', option)
