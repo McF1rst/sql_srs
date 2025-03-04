@@ -11,10 +11,11 @@ data = {
 }
 
 df = pd.DataFrame(data)
-option = st.selectbox("What would you like to review ?", ['Joins', 'Group By', 'Windows Functions'],
-                      placeholder="select a value ...", index=None)
-if option:
-    st.write('You selected ', option)
+with st.sidebar:
+    option = st.selectbox("What would you like to review ?", ['Joins', 'Group By', 'Windows Functions'],
+                          placeholder="select a value ...", index=None)
+    if option:
+        st.write('You selected ', option)
 tab1, tab2 = st.tabs(['SQL', 'Other'])
 with tab1:
     input_text = st.text_area('Entrez votre input')
