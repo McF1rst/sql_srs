@@ -1,23 +1,58 @@
 import streamlit as st
 import pandas as pd
 import duckdb
+import io
 
 st.title("SQL SRS")
 # Création du DataFrame
-data = {
-    "Colonne_A": [1, 2, 3, 4, 5],
-    "Colonne_B": ["A", "B", "C", "D", "E"],
-    "Colonne_C": [10.5, 20.3, 30.1, 40.8, 50.2]
-}
+csv = '''
+beverage,price
+orange juice,2.5
+Expresso,2
+Tea,3
+'''
 
-df = pd.DataFrame(data)
-option = st.selectbox("What would you like to review ?", ['Joins', 'Group By', 'Windows Functions'],
-                      placeholder="select a value ...", index=None)
-if option:
-    st.write('You selected ', option)
-tab1, tab2 = st.tabs(['SQL', 'Other'])
-with tab1:
-    input_text = st.text_area('Entrez votre input')
-    processed_dataframe = duckdb.sql(input_text)
-    if input_text:
+beverages = pd.read_csv(io.StringIO(csv))
+csv2 = '''
+food_item,food_price
+cookie juice,2.5
+chocolatine,2
+muffin,3
+'''
+
+food_items = pd.read_csv(io.StringIO(csv2))
+answer = """
+SELECT * FROM beverages
+CROSS JOIN food_items
+"""
+solution = duckdb.sql(answer).df()
+with st.sidebar:
+    option = st.selectbox("What would you like to review ?", ['Joins', 'Group By', 'Windows Functions'],
+                          placeholder="select a value ...", index=None)
+    if option:
+        st.write('You selected ', option)
+input_text = st.text_area('Entrez votre input')
+col1, col2 = st.columns(2)
+if input_text:
+    processed_dataframe = duckdb.sql(input_text).df()
+    if processed_dataframe.equals(solution):
+        st.success("Correct !")
         st.dataframe(processed_dataframe)
+    else:
+        with col1:
+            st.error("Incorrect ! Expected :")
+            st.dataframe(solution)
+        with col2:
+            st.error("But your output is :")
+            st.dataframe(processed_dataframe)
+
+tab1, tab2 = st.tabs(['Tables', 'Solution'])
+with tab1:
+    st.write("table: beverages")
+    st.dataframe(beverages)
+    st.write("table: food_items")
+    st.dataframe(food_items)
+    st.write("expected:")
+    st.dataframe(solution)
+with tab2:
+    st.write(answer)
