@@ -1,8 +1,9 @@
 # pylint: disable=missing-module-docstring
 import io
-import streamlit as st
-import pandas as pd
+
 import duckdb
+import pandas as pd
+import streamlit as st
 
 st.title("SQL SRS")
 # Création du DataFrame
