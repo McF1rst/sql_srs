@@ -19,7 +19,9 @@ with st.sidebar:
     if theme:
         st.write("You selected ", theme)
         exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'").df()
-
+    else:
+        st.warning("Please choose a theme to study.")
+        st.stop()
 input_text = st.text_area("Entrez votre input")
 col1, col2 = st.columns(2)
 with open(f"answers/{exercise.loc[0, 'exercise_name']}.sql") as f:
