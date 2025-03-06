@@ -1,4 +1,6 @@
 # pylint: disable=missing-module-docstring
+import ast
+
 import duckdb
 import streamlit as st
 
@@ -16,18 +18,15 @@ with st.sidebar:
     )
     if theme:
         st.write("You selected ", theme)
-        exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'")
-        st.write(exercise)
+        exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'").df()
+
 input_text = st.text_area("Entrez votre input")
 col1, col2 = st.columns(2)
-"""
-ANSWER = """
-# SELECT * FROM beverages
-# CROSS JOIN food_items
-"""
-solution = duckdb.sql(ANSWER).df()
+with open(f"answers/{exercise.loc[0, 'exercise_name']}.sql") as f:
+    answer = f.read()
+solution = con.execute(answer).df()
 if input_text:
-    processed_dataframe = duckdb.sql(input_text).df()
+    processed_dataframe = con.execute(input_text).df()
     if processed_dataframe.equals(solution):
         st.success("Correct !")
         st.dataframe(processed_dataframe)
@@ -41,12 +40,9 @@ if input_text:
 
 tab1, tab2 = st.tabs(["Tables", "Solution"])
 with tab1:
-    st.write("table: beverages")
-    st.dataframe(beverages)
-    st.write("table: food_items")
-    st.dataframe(food_items)
-    st.write("expected:")
-    st.dataframe(solution)
+    for table in ast.literal_eval(exercise.loc[0, "tables"]):
+        st.write(f"table: {table}")
+        st.dataframe(con.execute(f"SELECT * FROM {table}").df())
+
 with tab2:
-    st.write(ANSWER)
-"""
+    st.write(answer)
