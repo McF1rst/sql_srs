@@ -1,43 +1,32 @@
 # pylint: disable=missing-module-docstring
-import io
 import duckdb
-import pandas as pd
 import streamlit as st
 
+con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
+
 st.title("SQL SRS")
-# Création du DataFrame
-CSV = """
-beverage,price
-orange juice,2.5
-Expresso,2
-Tea,3
-"""
 
-beverages = pd.read_csv(io.StringIO(CSV))
-CSV2 = """
-food_item,food_price
-cookie juice,2.5
-chocolatine,2
-muffin,3
-"""
 
-food_items = pd.read_csv(io.StringIO(CSV2))
-ANSWER = """
-SELECT * FROM beverages
-CROSS JOIN food_items
-"""
-solution = duckdb.sql(ANSWER).df()
 with st.sidebar:
-    option = st.selectbox(
+    theme = st.selectbox(
         "What would you like to review ?",
-        ["Joins", "Group By", "Windows Functions"],
+        ["cross_joins", "Group By", "Windows Functions"],
         placeholder="select a value ...",
         index=None,
     )
-    if option:
-        st.write("You selected ", option)
+    if theme:
+        st.write("You selected ", theme)
+        exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'")
+        st.write(exercise)
+        st.write(con.execute("SELECT * FROM memory_state"))
 input_text = st.text_area("Entrez votre input")
 col1, col2 = st.columns(2)
+"""
+ANSWER = """
+# SELECT * FROM beverages
+# CROSS JOIN food_items
+"""
+solution = duckdb.sql(ANSWER).df()
 if input_text:
     processed_dataframe = duckdb.sql(input_text).df()
     if processed_dataframe.equals(solution):
@@ -61,3 +50,4 @@ with tab1:
     st.dataframe(solution)
 with tab2:
     st.write(ANSWER)
+"""
