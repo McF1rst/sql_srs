@@ -22,11 +22,12 @@ with st.sidebar:
     else:
         st.warning("Please choose a theme to study.")
         st.stop()
-input_text = st.text_area("Entrez votre input")
-col1, col2 = st.columns(2)
+
 with open(f"answers/{exercise.loc[0, 'exercise_name']}.sql") as f:
     answer = f.read()
 solution = con.execute(answer).df()
+input_text = st.text_area("Entrez votre input")
+col1, col2 = st.columns(2)
 if input_text:
     processed_dataframe = con.execute(input_text).df()
     if processed_dataframe.equals(solution):
