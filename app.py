@@ -7,7 +7,6 @@ con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=Fals
 st.title("SQL SRS")
 
 
-
 with st.sidebar:
     theme = st.selectbox(
         "What would you like to review ?",
@@ -17,15 +16,15 @@ with st.sidebar:
     )
     if theme:
         st.write("You selected ", theme)
-        exercise=con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'")
+        exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'")
         st.write(exercise)
         st.write(con.execute("SELECT * FROM memory_state"))
 input_text = st.text_area("Entrez votre input")
 col1, col2 = st.columns(2)
 """
 ANSWER = """
-#SELECT * FROM beverages
-#CROSS JOIN food_items
+# SELECT * FROM beverages
+# CROSS JOIN food_items
 """
 solution = duckdb.sql(ANSWER).df()
 if input_text:
