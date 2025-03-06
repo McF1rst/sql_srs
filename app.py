@@ -10,7 +10,7 @@ st.title("SQL SRS")
 with st.sidebar:
     theme = st.selectbox(
         "What would you like to review ?",
-        ["cross_joins", "Group By", "Windows Functions"],
+        ["cross_join", "Group By", "Windows Functions"],
         placeholder="select a value ...",
         index=None,
     )
@@ -18,7 +18,6 @@ with st.sidebar:
         st.write("You selected ", theme)
         exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'")
         st.write(exercise)
-        st.write(con.execute("SELECT * FROM memory_state"))
 input_text = st.text_area("Entrez votre input")
 col1, col2 = st.columns(2)
 """
