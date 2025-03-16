@@ -67,3 +67,5 @@ size = pd.read_csv(io.StringIO(SIZE))
 con.execute("CREATE TABLE IF NOT EXISTS size AS SELECT * FROM size")
 trademark = pd.read_csv(io.StringIO(TRADEMARK))
 con.execute("CREATE TABLE IF NOT EXISTS trademark AS SELECT * FROM trademark")
+
+con.close()
