@@ -19,6 +19,7 @@ with st.sidebar:
     if theme:
         st.write("You selected ", theme)
         exercise = con.execute(f"SELECT * FROM memory_state WHERE theme='{theme}'").df()
+        st.write(exercise)
     else:
         st.warning("Please choose a theme to study.")
         st.stop()
@@ -43,7 +44,7 @@ if input_text:
 
 tab1, tab2 = st.tabs(["Tables", "Solution"])
 with tab1:
-    for table in ast.literal_eval(exercise.loc[0, "tables"]):
+    for table in exercise.loc[1, "tables"]:
         st.write(f"table: {table}")
         st.dataframe(con.execute(f"SELECT * FROM {table}").df())
 
