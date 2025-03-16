@@ -5,6 +5,35 @@ import os
 import duckdb
 import streamlit as st
 
+
+#################
+# Functions part
+#################
+def check_answer(text_to_check: str):
+    """
+    Checks the answer filled by the user
+    In
+        text_to_check
+            str
+            text filled by the user that will be checked
+    Out
+     -
+    """
+    processed_dataframe = con.execute(text_to_check).df()
+    if processed_dataframe.equals(solution):
+        st.success("Correct !")
+        st.dataframe(processed_dataframe)
+    else:
+        with col1:
+            st.error("Incorrect ! Expected :")
+            st.dataframe(solution)
+        with col2:
+            st.error("But your output is :")
+            st.dataframe(processed_dataframe)
+
+
+#################
+
 if "data" not in os.listdir():
     logging.error(os.listdir)
     logging.error("creating folder data")
@@ -48,18 +77,10 @@ with open(f"answers/{exercise_to_practice}.sql") as f:
 solution = con.execute(answer).df()
 input_text = st.text_area("Entrez votre input")
 col1, col2 = st.columns(2)
+
+
 if input_text:
-    processed_dataframe = con.execute(input_text).df()
-    if processed_dataframe.equals(solution):
-        st.success("Correct !")
-        st.dataframe(processed_dataframe)
-    else:
-        with col1:
-            st.error("Incorrect ! Expected :")
-            st.dataframe(solution)
-        with col2:
-            st.error("But your output is :")
-            st.dataframe(processed_dataframe)
+    check_answer(input_text)
 
 tab1, tab2 = st.tabs(["Tables", "Solution"])
 with tab1:
