@@ -10,8 +10,8 @@ if "data" not in os.listdir():
     os.mkdir("data")
 if "exercises_sql_tables.duckdb" not in os.listdir("data"):
     exec(open("init_db.py").read())
-
-con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
+else:
+    con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=False)
 
 st.title("SQL SRS")
 
