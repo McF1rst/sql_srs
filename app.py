@@ -16,11 +16,11 @@ con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=Fals
 
 st.title("SQL SRS")
 
-
+all_data = con.execute("SELECT * FROM memory_state").df()
 with st.sidebar:
     theme = st.selectbox(
         "What would you like to review ?",
-        ["cross_join", "Group By", "Windows Functions"],
+        all_data["theme"].unique(),
         placeholder="select a value ...",
         index=None,
     )
