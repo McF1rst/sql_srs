@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring
 import io
 
 import duckdb
@@ -9,10 +10,9 @@ con = duckdb.connect(database="data/exercises_sql_tables.duckdb", read_only=Fals
 # --------------------------------------------------
 data = {
     "theme": ["cross_join", "cross_join"],
-    "exercise_name": ["beverages_and_food", "size_and_trademarks"],
+    "exercise_name": ["beverages_and_food", "size_and_trademark"],
     "tables": [["beverages", "food_items"], ["size", "trademark"]],
     "last_reviewed": ["1970-01-01", "1970-01-01"],
-    "answer": ["SELECT * FROM beverages CROSS JOIN food_items", ""],
 }
 memory_state_df = pd.DataFrame(data)
 con.execute("CREATE TABLE IF NOT EXISTS memory_state AS SELECT * FROM memory_state_df")
@@ -66,3 +66,5 @@ size = pd.read_csv(io.StringIO(SIZE))
 con.execute("CREATE TABLE IF NOT EXISTS size AS SELECT * FROM size")
 trademark = pd.read_csv(io.StringIO(TRADEMARK))
 con.execute("CREATE TABLE IF NOT EXISTS trademark AS SELECT * FROM trademark")
+
+con.close()
