@@ -1,3 +1,4 @@
 .idea/
 venv/
-*.csv
+*.csvdata/exercises_sql_tables.duckdb
+data/

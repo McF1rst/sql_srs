@@ -1,4 +1,5 @@
 import io
+
 import duckdb
 import pandas as pd
 
@@ -44,3 +45,22 @@ ANSWER = """
  CROSS JOIN food_items
 """
 solution = duckdb.sql(ANSWER).df()
+
+SIZE = """
+size
+XS
+M
+L
+XL
+"""
+
+TRADEMARK = """
+trademark
+Nike
+Asphalte
+Abercrombie
+Lewis
+"""
+
+size = pd.read_csv(io.StringIO(SIZE))
+trademark = pd.read_csv(io.StringIO(TRADEMARK))
